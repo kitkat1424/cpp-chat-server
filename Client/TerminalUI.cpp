@@ -55,23 +55,35 @@ void TerminalUI::draw_layout() {
     wrefresh(win_input);
 }
 
-void TerminalUI::get_username() {
-    mvwprintw(win_chat, 1, 1, "connected. please enter your username: ");
-    wrefresh(win_chat);
+// In Client/TerminalUI.cpp
 
-    char buffer[100] = {0};
+void TerminalUI::get_username() {
+    const std::string prompt = "connected. please enter your username: ";
+    const int MAX_NAME_LEN = 99; 
+    char buffer[MAX_NAME_LEN + 1] = {0};
+
     int i = 0;
     int ch;
+    mvwprintw(win_chat, 1, 1, "%s", prompt.c_str());
+    wrefresh(win_chat);
 
     while((ch = wgetch(win_chat)) != '\n') {
         if(ch == KEY_BACKSPACE || ch == 127) {
-            if(i> 0) i--;
-        } else if(i < 99 && isprint(ch)) {
-            buffer[i] = ch;
-            i++;
+            if(i > 0) {
+                i--;
+                buffer[i] = '\0';
+            }
+        } else if(i < MAX_NAME_LEN && isprint(ch)) {
+            buffer[i++] = ch;
+            buffer[i] = '\0';
         }
-        mvwprintw(win_chat, 1, 1, "connected. please enter your username: %-99s", buffer);
-        wmove(win_chat, 1, 38 + i); 
+
+        wmove(win_chat, 1, 1);   
+        wclrtoeol(win_chat);   
+        
+        mvwprintw(win_chat, 1, 1, "%s%s", prompt.c_str(), buffer);
+        
+        wmove(win_chat, 1, prompt.length() + i + 1); 
         wrefresh(win_chat);
     }
 
