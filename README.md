@@ -2,6 +2,8 @@
 
 A high-performance, multi-threaded, and modular chat server and client application written in C++ from scratch. This project demonstrates core concepts in systems programming, concurrency, and network architecture.
 
+![Alt Text](images/image.png)
+
 ## **🚀 Core Features**
 
 ### **Implemented**
